@@ -10,6 +10,7 @@ public class Wheel {
 		this.brand = brand;
 		this.diameter = diameter;
 		
+		//Dispara una excepcio WheelDiameterException si el diametre del constructor es incorrecte
 		if (this.checkDiameter()==false) throw new WheelDiameterException();
 	}
 
@@ -28,6 +29,8 @@ public class Wheel {
 		return ( yes );
 	}
 	
+	//Si el diametre esta dins d'un rang valid superior a 0.4 i inferior a 4 retorna true
+	//en cas contrari, retorna false
 	private boolean checkDiameter() {
 		
 		boolean res = false;

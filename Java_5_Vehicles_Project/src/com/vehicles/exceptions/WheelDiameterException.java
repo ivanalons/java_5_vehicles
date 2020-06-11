@@ -1,6 +1,6 @@
 package com.vehicles.exceptions;
 
-//Excepció llansada quan s'afegeix un numero de rodes (frontals o posteriors) diferent de 2 
+//Excepció disparada quan el diametre de la roda no esta dins del rang correcte
 public class WheelDiameterException extends Exception {
 
 	private String message = "Error al crear una roda: "

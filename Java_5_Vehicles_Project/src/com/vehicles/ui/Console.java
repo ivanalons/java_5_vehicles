@@ -38,7 +38,9 @@ public class Console {
 		Car car = null;
 		boolean plateFormat = false;
 		
-		while(plateFormat==false) {
+		//mentre el format de la matricula no sigui valid, demanar per consola a l'usuari
+		//que introdueixi la matricula de nou
+		while(plateFormat==false) { 
 			
 			try {
 				car = new Car(plate,brand,color);
@@ -103,6 +105,8 @@ public class Console {
 		Wheel wheelRight = null;
 		boolean correctDiameter = false;
 		
+		//mentre el diametre de la roda no sigui valid, demanar per consola a l'usuari
+		//que introdueixi el diametre de nou
 		while (correctDiameter==false) {
 			try {
 				wheelLeft = new Wheel(brand,diameter);

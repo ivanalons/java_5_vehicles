@@ -1,6 +1,6 @@
 package com.vehicles.exceptions;
 
-//Excepció llansada quan s'afegeix un numero de rodes (frontals o posteriors) diferent de 2 
+//Excepció disparada quan la matricula no te el format correcte 
 public class CarPlateException extends Exception {
 
 	private String message = "Error en el format de la matrícula: una matrícula ha de tenir "
