@@ -54,8 +54,11 @@ public class Console {
 		
 		int tipusVehicle = 0;
 		
+		tipusVehicle = this.askInt("Que vols crear un cotxe o una moto ? (1:cotxe / 2:moto)");
+		
 		while(tipusVehicle!=CONST_CAR && tipusVehicle!=CONST_BIKE) {
-			tipusVehicle = this.askInt("Que vols crear un cotxe o una moto ? (1:cotxe / 2:moto)");
+			tipusVehicle = this.askInt("Has d'introduir un '1' per seleccionar cotxe"+
+									   " o '2' per seleccionar una moto");
 		}
 		
 		return tipusVehicle;
