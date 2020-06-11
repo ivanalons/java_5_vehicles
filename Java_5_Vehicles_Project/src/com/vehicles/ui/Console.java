@@ -65,15 +65,10 @@ public class Console {
 			car.addWheels(frontWheels, backWheels);
 			
 		}catch(WheelNumberException e) {
-			System.out.println("Error al afegir rodes al cotxe. "
-							 + "S'han de afegir 2 rodes frontals o 2 rodes posteriors");
+			System.out.println(e.getMessage());
 			
 		}catch(WheelNotEqualsException e2) {
-			System.out.println("Error: Les rodes del mateix eix han de ser iguals");
-			
-		} catch (Exception e3) {
-			System.out.println("Error al afegir rodes frontals i posteriors al cotxe");
-			e3.printStackTrace();
+			System.out.println(e2.getMessage());
 		}
 	}
 	
