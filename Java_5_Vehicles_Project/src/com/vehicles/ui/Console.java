@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+import com.vehicles.exceptions.CarPlateException;
+import com.vehicles.exceptions.WheelDiameterException;
 import com.vehicles.exceptions.WheelNotEqualsException;
 import com.vehicles.exceptions.WheelNumberException;
 import com.vehicles.project.Car;
@@ -33,8 +35,24 @@ public class Console {
 		String brand = this.askString("Introdueix la marca:");
 		String color = this.askString("Introdueix el color:");
 		
-		Car car = new Car(plate,brand,color);
+		Car car = null;
+		boolean plateFormat = false;
 		
+		while(plateFormat==false) {
+			
+			try {
+				car = new Car(plate,brand,color);
+				plateFormat=true;
+				
+			}catch(CarPlateException e) {
+
+				System.out.println(e.getMessage());
+				plate = this.askString("Introdueix la matrícula amb un format correcte:");
+
+			}
+			
+		}	
+			
 		return car;
 		
 	}
@@ -80,9 +98,23 @@ public class Console {
 
 		String brand = this.askString("Introdueix la marca:");
 		double diameter = this.askDouble("Introdueix el diàmetre:");
-		Wheel wheelLeft = new Wheel(brand,diameter);
-		Wheel wheelRight = new Wheel(brand,diameter);
-
+		
+		Wheel wheelLeft = null;
+		Wheel wheelRight = null;
+		boolean correctDiameter = false;
+		
+		while (correctDiameter==false) {
+			try {
+				wheelLeft = new Wheel(brand,diameter);
+				wheelRight = new Wheel(brand,diameter);
+				correctDiameter = true;
+				
+			}catch(WheelDiameterException e) {
+				System.out.println(e.getMessage());
+				diameter = this.askDouble("Introdueix el diàmetre dins del rang vàlid:");
+			}
+		}
+			
 		wheelsList.add(wheelLeft);
 		wheelsList.add(wheelRight);
 
