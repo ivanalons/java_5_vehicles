@@ -1,6 +1,7 @@
 package com.vehicles.main;
 
 import com.vehicles.project.Car;
+
 import com.vehicles.ui.Console;
 
 public class Main {

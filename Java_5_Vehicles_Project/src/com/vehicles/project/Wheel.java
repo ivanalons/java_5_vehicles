@@ -19,7 +19,7 @@ public class Wheel {
 	
 	public boolean equals(Wheel wheel) { //IAG sobreescriu el mètode equals per a comparar dos rodes
 		
-		boolean yes = this.brand.equals(wheel.brand) && this.diameter==wheel.diameter;
+		boolean yes = this.brand.equalsIgnoreCase(wheel.brand) && this.diameter==wheel.diameter;
 		
 		return ( yes );
 	}
