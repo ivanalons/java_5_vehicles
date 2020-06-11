@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.vehicles.exceptions.CarPlateException;
+import com.vehicles.exceptions.VehiclePlateException;
 import com.vehicles.exceptions.WheelDiameterException;
 import com.vehicles.exceptions.WheelNotEqualsException;
 import com.vehicles.exceptions.WheelNumberException;
@@ -29,9 +29,8 @@ public class Console {
 	// Es crea un nou cotxe a partir de les dades introduïdes per consola
 	public Vehicle inputCreateVehicle() {
 		
-		int tipusVehicle = this.askInt("Que vols crear un cotxe o una moto ? (1:cotxe / 2:moto)");
-		
-		//Falta controlar que s'introdueixi 1 o 2 per consola
+		// Es demana escollir a l'usuari entre crear una moto(2) o un cotxe(1)
+		int tipusVehicle = this.askVehicleType();
 		
 		System.out.println("---------------------------------");
 		System.out.println("Introdueix els dades del vehicle:");
@@ -41,32 +40,53 @@ public class Console {
 		String brand = this.askString("Introdueix la marca:");
 		String color = this.askString("Introdueix el color:");
 		
+		//Retorna un nou objecte vehicle amb els atributs "plate","brand" i "color"
+		Vehicle vehicle = createVehicle(tipusVehicle,plate,brand,color);
+				
+		return vehicle;
+		
+	}
+	
+	//Retorna el tipus de vehicle que l'usuari vol crear (1:cotxe / 2:moto)
+	private int askVehicleType() {
+		
+		int tipusVehicle = 0;
+		
+		while(tipusVehicle!=1 && tipusVehicle!=2) {
+			tipusVehicle = this.askInt("Que vols crear un cotxe o una moto ? (1:cotxe / 2:moto)");
+		}
+		
+		return tipusVehicle;
+	}
+	
+	//Crea i retorna un vehicle de tipus cotxe o moto segons el parametre "tipusVehicle"
+	//Tenint en compte que la matricula "plate" tingui un format correcte
+	private Vehicle createVehicle(int tipusVehicle, String plate, String brand, String color) {
+		
 		Vehicle vehicle = null;
 		boolean plateFormat = false;
 		
-		//mentre el format de la matricula no sigui valid, demanar per consola a l'usuari
-		//que introdueixi la matricula de nou
-		while(plateFormat==false) { 
-			
+		// mentre el format de la matricula no sigui valid, demanar per consola a
+		// l'usuari que introdueixi la matricula de nou
+		while (plateFormat == false) {
+
 			try {
-				if(tipusVehicle==1) {
-					vehicle = new Car(plate,brand,color);
-				}else {
-					vehicle = new Bike(plate,brand,color);
+				if (tipusVehicle == 1) { // S'ha de crear un cotxe
+					vehicle = new Car(plate, brand, color);
+				} else { // tipusVehicle == 2 ==>  S'ha de crear una moto
+					vehicle = new Bike(plate, brand, color);
 				}
-				plateFormat=true;
-				
-			}catch(CarPlateException e) {
+				plateFormat = true;
+
+			} catch (VehiclePlateException e) {
 
 				System.out.println(e.getMessage());
 				plate = this.askString("Introdueix la matrícula amb un format correcte:");
 
 			}
-			
-		}	
-			
+
+		}
 		return vehicle;
-		
 	}
 	
 	// S'afegeixen dos rodes frontals i dos rodes posteriors al cotxe referenciat per paràmetre
