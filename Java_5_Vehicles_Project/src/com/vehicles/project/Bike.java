@@ -6,4 +6,8 @@ public class Bike extends Vehicle {
 		super(plate, brand, color);
 	}
 
+	public String toString() {
+		return "{MOTO} : " + super.toString();
+	}
+	
 }

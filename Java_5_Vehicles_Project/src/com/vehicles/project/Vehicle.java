@@ -15,4 +15,9 @@ public abstract class Vehicle {
 		this.brand = brand;
 		this.color = color;
 	}
+	
+	public String toString() {
+		return "matricula: ["+plate+"], marca: ["+brand+"], color: ["+color+"]";
+	}
+	
 }

@@ -9,7 +9,9 @@ import com.vehicles.exceptions.CarPlateException;
 import com.vehicles.exceptions.WheelDiameterException;
 import com.vehicles.exceptions.WheelNotEqualsException;
 import com.vehicles.exceptions.WheelNumberException;
+import com.vehicles.project.Bike;
 import com.vehicles.project.Car;
+import com.vehicles.project.Vehicle;
 import com.vehicles.project.Wheel;
 
 public class Console {
@@ -25,17 +27,21 @@ public class Console {
 	}
 	
 	// Es crea un nou cotxe a partir de les dades introduïdes per consola
-	public Car inputCreateCar() {
+	public Vehicle inputCreateVehicle() {
 		
-		System.out.println("-------------------------------");
-		System.out.println("Introdueix els dades del cotxe:");
-		System.out.println("-------------------------------");
+		int tipusVehicle = this.askInt("Que vols crear un cotxe o una moto ? (1:cotxe / 2:moto)");
+		
+		//Falta controlar que s'introdueixi 1 o 2 per consola
+		
+		System.out.println("---------------------------------");
+		System.out.println("Introdueix els dades del vehicle:");
+		System.out.println("---------------------------------");
 
 		String plate = this.askString("Introdueix la matrícula:");
 		String brand = this.askString("Introdueix la marca:");
 		String color = this.askString("Introdueix el color:");
 		
-		Car car = null;
+		Vehicle vehicle = null;
 		boolean plateFormat = false;
 		
 		//mentre el format de la matricula no sigui valid, demanar per consola a l'usuari
@@ -43,7 +49,11 @@ public class Console {
 		while(plateFormat==false) { 
 			
 			try {
-				car = new Car(plate,brand,color);
+				if(tipusVehicle==1) {
+					vehicle = new Car(plate,brand,color);
+				}else {
+					vehicle = new Bike(plate,brand,color);
+				}
 				plateFormat=true;
 				
 			}catch(CarPlateException e) {
@@ -55,7 +65,7 @@ public class Console {
 			
 		}	
 			
-		return car;
+		return vehicle;
 		
 	}
 	
@@ -161,4 +171,31 @@ public class Console {
 		return answer;
 	}
 
+	// Demana un número enter per consola mostrant previament el missatge passat per paràmetre
+	// Si s'hi introdueix un número amb format no vàlid, es torna a demanar que l'usuari introdueixi un altre
+	// cop el número
+	// Retorna el valor introduït per l'usuari
+	public int askInt(String questionMessage) {
+		
+		int answer = 0;	
+		boolean numberFormat = false;
+		
+		System.out.println(questionMessage);
+		
+		do {
+		
+			try {	
+			   answer = this.input.nextInt();
+			   numberFormat = true;			   
+			}catch (InputMismatchException e) {				
+			   System.out.println("Tipus numèric invàlid! Torna a introduir el número:");
+			   numberFormat = false;
+			}		
+			this.input.nextLine();
+			
+		} while (numberFormat==false);
+		
+		return answer;
+	}
+	
 }
