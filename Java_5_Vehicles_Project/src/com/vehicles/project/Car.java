@@ -1,5 +1,6 @@
 package com.vehicles.project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vehicles.exceptions.VehiclePlateException;
@@ -12,33 +13,32 @@ public class Car extends Vehicle {
 		super(plate, brand, color);
 
 	}
-
-	public void addWheels(List<Wheel> frontWheels, List<Wheel> backWheels) throws WheelNumberException, WheelNotEqualsException {
-		addTwoWheels(frontWheels);
-		addTwoWheels(backWheels);
+	//Afegeix les rodes a la llista wheels de la superclasse Vehicle per ordre:
+	//1 roda_frontal_esquerra, 2 roda_frontal_dreta, 3 roda_posterior_esquerra, 4 roda_posterior_dreta
+	public void addWheels(Wheel frontWheel, Wheel backWheel) throws WheelNumberException, WheelNotEqualsException {
+		
+		this.addPairOfWheels(frontWheel);  //S'afegeixen les dues rodes frontals
+		this.addPairOfWheels(backWheel);   //S'afegeixen les dues rodes posteriors
 	}
-
-	public void addTwoWheels(List<Wheel> wheels) throws WheelNumberException, WheelNotEqualsException {
-				
-		if (wheels.size() != 2) throw new WheelNumberException();
-
-		Wheel rightWheel = wheels.get(0);
-		Wheel leftWheel = wheels.get(1);
-
-		if (!rightWheel.equals(leftWheel)) throw new WheelNotEqualsException();
-
-		this.wheels.add(leftWheel);
-		this.wheels.add(rightWheel);
-	}
-
-	
     
+	//a partir d'un objecte Wheel, es crea una copia i s'afegeixen les dues rodes a la llista wheel
+	//de la superclasse
+	public void addPairOfWheels(Wheel wheel) throws WheelNumberException, WheelNotEqualsException{
+		List<Wheel> list = new ArrayList<>();
+		Wheel leftWheel = wheel;
+		Wheel rightWheel = new Wheel(wheel);
+		list.add(leftWheel);
+		list.add(rightWheel);
+		
+		this.addTwoWheels(list);
+	}
 	
-	//IAG mostra todes les dades de l'objecte "Car" per pantalla
+	// mostra todes les dades de l'objecte "Car" per pantalla
 	public void print() {
 		
-		System.out.println("CAR");
-		System.out.println("---");
+		System.out.println("-----");
+		System.out.println("COTXE");
+		System.out.println("-----");
 		
 		super.print();
 
@@ -54,6 +54,7 @@ public class Car extends Vehicle {
 		
 	}
 	
+	// retorna un String amb l'estat dels atributs de la superclasse
 	public String toString() {
 		return "{COTXE} : " + super.toString();
 	}

@@ -1,8 +1,6 @@
 package com.vehicles.ui;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 import com.vehicles.exceptions.VehiclePlateException;
@@ -18,6 +16,9 @@ public class Console {
 
 	Scanner input;
 	
+	final int CONST_CAR = 1; //Indica que s'ha de crear un cotxe quan l'usuari selecciona vehicle
+	final int CONST_BIKE = 2; //Indica que s'ha de crear una moto quan l'usuari selecciona vehicle
+	
 	public Console(){
 		input = new Scanner(System.in);
 	}
@@ -26,7 +27,8 @@ public class Console {
 		this.input.close();
 	}
 	
-	// Es crea un nou cotxe a partir de les dades introduïdes per consola
+	// Es crea un nou vehicle a partir de les dades introduïdes per consola
+	// Es retorna l'objecte vehicle (cotxe o moto)
 	public Vehicle inputCreateVehicle() {
 		
 		// Es demana escollir a l'usuari entre crear una moto(2) o un cotxe(1)
@@ -52,7 +54,7 @@ public class Console {
 		
 		int tipusVehicle = 0;
 		
-		while(tipusVehicle!=1 && tipusVehicle!=2) {
+		while(tipusVehicle!=CONST_CAR && tipusVehicle!=CONST_BIKE) {
 			tipusVehicle = this.askInt("Que vols crear un cotxe o una moto ? (1:cotxe / 2:moto)");
 		}
 		
@@ -60,7 +62,7 @@ public class Console {
 	}
 	
 	//Crea i retorna un vehicle de tipus cotxe o moto segons el parametre "tipusVehicle"
-	//Tenint en compte que la matricula "plate" tingui un format correcte
+	//També es comprova que la matricula "plate" tingui un format correcte
 	private Vehicle createVehicle(int tipusVehicle, String plate, String brand, String color) {
 		
 		Vehicle vehicle = null;
@@ -71,9 +73,9 @@ public class Console {
 		while (plateFormat == false) {
 
 			try {
-				if (tipusVehicle == 1) { // S'ha de crear un cotxe
+				if (tipusVehicle == CONST_CAR) { // S'ha de crear un cotxe
 					vehicle = new Car(plate, brand, color);
-				} else { // tipusVehicle == 2 ==>  S'ha de crear una moto
+				} else { // tipusVehicle == CONST_BIKE ==>  S'ha de crear una moto
 					vehicle = new Bike(plate, brand, color);
 				}
 				plateFormat = true;
@@ -89,30 +91,33 @@ public class Console {
 		return vehicle;
 	}
 	
-	// S'afegeixen dos rodes frontals i dos rodes posteriors al cotxe referenciat per paràmetre
-	// a partir de les dades introduïdes per consola
-	public void inputAddWheels( Car car ) {
+	// Si el vehicle es un cotxe:
+	// S'afegeixen dos rodes frontals identiques amb l'estat de la roda "frontWheel" 
+	// i dos rodes posteriors identiques amb l'estat de la roda "backWheel"
+	//
+	// Si el vehicle es una moto:
+	// S'afegeix com a roda frontal, la roda "frontWheel", i com a roda posterior, la roda "backWheel"
+	public void inputAddWheels( Vehicle vehicle ) {
 		
 		System.out.println("----------------------------------");
 		System.out.println("Introdueix les dades de les rodes:");
 		System.out.println("----------------------------------");
 		
 		String labelFrontWheels = "rodes frontals";
+		if(vehicle instanceof Bike)  labelFrontWheels = "roda frontal";
 		String labelBackWheels = "rodes posteriors" ;
+		if(vehicle instanceof Bike)  labelBackWheels = "roda posterior";
+	
+		//S'obté per consola una instancia Wheel com a model de la roda frontal
+		Wheel frontWheel = inputCreateWheel(labelFrontWheels); 
 		
-		List<Wheel> frontWheels = new ArrayList<>();
-		List<Wheel> backWheels = new ArrayList<>();
-		
-		//actualitza la llista "backWheels" afegint les rodes posteriors i els seus atributs introduïts per consola
-		inputAddWheelsList(labelBackWheels, backWheels); 
-		
-		//actualitza la llista "frontWheels" afegint les rodes posteriors i els seus atributs introduïts per consola
-		inputAddWheelsList(labelFrontWheels, frontWheels);
+		//S'obté per consola una instancia Wheel com a model de la roda posterior
+		Wheel backWheel = inputCreateWheel(labelBackWheels);
 		
 		try {
 			
-			//Afegeix les rodes frontals i posteriors al cotxe referenciat per paràmetre
-			car.addWheels(frontWheels, backWheels);
+			//Afegeix les rodes frontals i posteriors al "vehicle" referenciat per paràmetre
+			vehicle.addWheels(frontWheel, backWheel);
 			
 		}catch(WheelNumberException e) {
 			System.out.println(e.getMessage());
@@ -122,25 +127,23 @@ public class Console {
 		}
 	}
 	
-	// Afegeix dos rodes a la llista "wheelsList" referenciada per paràmetre 
-	// amb la mateixa marca i diàmetre introduïts per consola
-	public void inputAddWheelsList(String label, List<Wheel> wheelsList) {
+	// Es demana per consola introduir les dades d'una roda per a poder crear-la.
+	// El diametre ha de estar dins del rang valid.
+	public Wheel inputCreateWheel(String label) {
 		
 		System.out.println( label.toUpperCase() );
 
 		String brand = this.askString("Introdueix la marca:");
 		double diameter = this.askDouble("Introdueix el diàmetre:");
 		
-		Wheel wheelLeft = null;
-		Wheel wheelRight = null;
+		Wheel wheel = null;
 		boolean correctDiameter = false;
 		
 		//mentre el diametre de la roda no sigui valid, demanar per consola a l'usuari
 		//que introdueixi el diametre de nou
 		while (correctDiameter==false) {
 			try {
-				wheelLeft = new Wheel(brand,diameter);
-				wheelRight = new Wheel(brand,diameter);
+				wheel = new Wheel(brand,diameter);
 				correctDiameter = true;
 				
 			}catch(WheelDiameterException e) {
@@ -149,8 +152,7 @@ public class Console {
 			}
 		}
 			
-		wheelsList.add(wheelLeft);
-		wheelsList.add(wheelRight);
+		return wheel;
 
 	}
 	

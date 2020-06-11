@@ -14,6 +14,11 @@ public class Wheel {
 		if (this.checkDiameter()==false) throw new WheelDiameterException();
 	}
 
+	public Wheel(Wheel wheel) {
+		this.brand=wheel.brand;
+		this.diameter=wheel.diameter;
+	}
+	
 	public String getBrand() {
 		return brand;
 	}
@@ -22,7 +27,8 @@ public class Wheel {
 		return diameter;
 	}
 	
-	public boolean equals(Wheel wheel) { //IAG sobreescriu el mètode equals per a comparar dos rodes
+	//sobreescriu el mètode equals per a comparar dues rodes
+	public boolean equals(Wheel wheel) { 
 		
 		boolean yes = this.brand.equalsIgnoreCase(wheel.brand) && this.diameter==wheel.diameter;
 		

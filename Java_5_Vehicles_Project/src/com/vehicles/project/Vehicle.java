@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vehicles.exceptions.VehiclePlateException;
+import com.vehicles.exceptions.WheelNotEqualsException;
+import com.vehicles.exceptions.WheelNumberException;
 
 public abstract class Vehicle {
 
@@ -53,6 +55,22 @@ public abstract class Vehicle {
 		return res;
 	}
 
+	// Afegeix un parell de rodes al vehicle. Codi original. Pot ser reutilitzable en un futur per
+	// noves subclasses de Vehicle, com per exemple, una classe camió 
+	public void addTwoWheels(List<Wheel> wheels) throws WheelNumberException, WheelNotEqualsException {
+		
+		if (wheels.size() != 2) throw new WheelNumberException();
+
+		Wheel wheel1 = wheels.get(0);
+		Wheel wheel2 = wheels.get(1);
+
+		if (!wheel1.equals(wheel2)) throw new WheelNotEqualsException();
+
+		this.wheels.add(wheel1);
+		this.wheels.add(wheel2);
+		
+	}
+	
 	public String toString() {
 		return "matricula: ["+plate+"], marca: ["+brand+"], color: ["+color+"]";
 	}
@@ -63,4 +81,8 @@ public abstract class Vehicle {
 		System.out.println("color: "+this.color);
 	}
 	
+	//Afegeix les rodes del vehicle
+	//Actualment es un metode diferent a cada subclasse: un cotxe afegeix 2 rodes posteriors i 2 rodes
+	//frontals mentre que una moto afegeix 1 roda posterior i 1 roda frontal
+	public abstract void addWheels(Wheel frontWheels, Wheel backWheels) throws WheelNumberException, WheelNotEqualsException;
 }
